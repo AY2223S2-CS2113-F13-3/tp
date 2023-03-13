@@ -1,33 +1,38 @@
 package seedu.duke;
 
-import java.util.ArrayList;
-
 public class Parser {
 
-    public static void parseCommand(String userInput, EventList eventList){
+    public static void parseCommand(String userInput, EventList eventList) {
         userInput = userInput.trim();
         String command = userInput.substring(0, userInput.indexOf(" "));
         String remainder = userInput.substring(userInput.indexOf(" ") + 1);
         switch (command) {
-            case "add":
-                parseAddCommand(remainder, eventList);
-                break;
-            case "delete":
-                parseDeleteCommand(remainder, eventList);
-                break;
-            case "list":
-                parseListCommand(eventList);
-                break;
-            case "edit":
-                // parseEditCommand(remainder, eventList);
-                break;
-            default:
-
-                break;
+        case "add":
+            parseAddCommand(remainder, eventList);
+            break;
+        case "delete":
+            parseDeleteCommand(remainder, eventList);
+            break;
+        case "list":
+            parseListCommand(eventList);
+            break;
+        default:
+            break;
         }
     }
 
-    public static void parseAddCommand(String remainder, EventList eventList) {
+    private static void parseListCommand(EventList eventList) {
+        Ui.listTask(eventList.fullList());
+    }
+
+    private static void parseDeleteCommand(String remainder, EventList eventList) {
+        eventList.deleteThisTask(Integer.parseInt(remainder));
+
+        //TODO: Show successful add on UI. (For all cases)
+        Ui.deleteSuccessMsg();
+    }
+
+    private static void parseAddCommand(String remainder, EventList eventList) {
         // Note no "-" anywhere else.
         String[] details = remainder.split("-");
         String eventName = details[0];
@@ -44,16 +49,5 @@ public class Parser {
 
         //TODO: Show successful add on UI. (For all cases)
         Ui.addSuccessMsg();
-    }
-
-    private static void parseDeleteCommand(String remainder, EventList eventList) {
-        eventList.deleteThisTask(Integer.parseInt(remainder));
-
-        //TODO: Show successful add on UI. (For all cases)
-        Ui.deleteSuccessMsg();
-    }
-
-    private static void parseListCommand(EventList eventList) {
-        Ui.listTask(eventList.fullList());
     }
 }
