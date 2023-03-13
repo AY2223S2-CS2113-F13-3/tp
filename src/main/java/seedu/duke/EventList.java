@@ -34,6 +34,10 @@ public class EventList {
         listSize--;
     }
 
+    public ArrayList<Event> fullList() {
+        return this.taskList;
+    }
+
     private LocalDateTime changeToDate(String time, String date) {
         String combination = date + " " + time;
         return LocalDateTime.parse(combination, dfWithTime);
@@ -83,7 +87,7 @@ public class EventList {
         listSize++;
     }
 
-    public void addEvent(String description, String startTime, String startDay) {
+    public void addEvent(String description, String startTime, String startDay, String endTime) {
         boolean hasStTime = true;
         LocalDateTime combinedStartTime = LocalDateTime.parse(DTINIT, dfWithTime);
 
