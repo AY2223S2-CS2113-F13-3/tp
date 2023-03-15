@@ -113,15 +113,17 @@ Please add a description of the bug found under our [Issue Tracker]([here](https
 ## Command Summary
 👉 Words in **CAPITAL LETTERS** are user input
 
+👉 Words in [] are OPTIONAL
+
 👉 Each word is separated by only a **single whitespace**
 
 
 **Command | Description**
-* `add –e EVENTNAME –st STARTTIME –sd STARTDATE –et ENDTIME –ed ENDDATE` | Add event
+* `add –e EVENTNAME –st [STARTTIME] –sd STARTDATE –et [ENDTIME] –ed [ENDDATE]` | Add event
 * `delete –s 1` | Delete a single event
 * `delete -all` | Delete all events
 * `list` | List all events
-* `edit -i INDEX_OF_EVENT –st STARTTIME –sd STARTDATE –et ENDTIME –ed ENDDATE` | Edit event
+* `edit -i INDEX_OF_EVENT –st [STARTTIME] –sd STARTDATE –et [ENDTIME] –ed [ENDDATE]` | Edit event
 
 
 
