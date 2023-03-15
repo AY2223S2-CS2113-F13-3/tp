@@ -36,20 +36,21 @@ public class Ui {
      * users when application is launched
      */
     public static void showWelcome() {
-        String logo = ("                                                                                                                        \n" +
-                "888b      88  88        88   ad88888ba   88888888ba   88                                                                \n" +
-                "8888b     88  88        88  d8\"     \"8b  88      \"8b  88                                                                \n" +
-                "88 `8b    88  88        88  Y8,          88      ,8P  88                                                                \n" +
-                "88  `8b   88  88        88  `Y8aaaaa,    88aaaaaa8P'  88  ,adPPYYba,  8b,dPPYba,   8b,dPPYba,    ,adPPYba,  8b,dPPYba,  \n" +
-                "88   `8b  88  88        88    `\"\"\"\"\"8b,  88\"\"\"\"\"\"'    88  \"\"     `Y8  88P'   `\"8a  88P'   `\"8a  a8P_____88  88P'   \"Y8  \n" +
-                "88    `8b 88  88        88          `8b  88           88  ,adPPPPP88  88       88  88       88  8PP\"\"\"\"\"\"\"  88          \n" +
-                "88     `8888  Y8a.    .a8P  Y8a     a8P  88           88  88,    ,88  88       88  88       88  \"8b,   ,aa  88          \n" +
-                "88      `888   `\"Y8888Y\"'    \"Y88888P\"   88           88  `\"8bbdP\"Y8  88       88  88       88   `\"Ybbd8\"'  88          \n" +
-                "                                                                                                                        \n" +
-                "                                                                                                                        \n");
-
-        String logo1 =  "█▄ █ █ █ ▄▀▀ █▀▄ █   ▄▀▄ █▄ █ █▄ █ ██▀ █▀▄\n"
-                + "█ ▀█ ▀▄█ ▄██ █▀  █▄▄ █▀█ █ ▀█ █ ▀█ █▄▄ █▀▄\n\n";
+        String logo =
+                ("\n" + "888b      88  88        88   ad88888ba   88888888ba   88\n" +
+                        "8888b     88  88        88  d8\"     \"8b  88      \"8b  88\n" +
+                        "88 `8b    88  88        88  Y8,          88      ,8P  88\n" +
+                        "88  `8b   88  88        88  `Y8aaaaa,    88aaaaaa8P'  88  ," +
+                        "adPPYYba,  8b,dPPYba,   8b,dPPYba,    ,adPPYba,  8b,dPPYba,  \n" +
+                        "88   `8b  88  88        88    `\"\"\"\"\"8b,  88\"\"\"\"\"\"'    " +
+                        "88  \"\"     `Y8  88P'   `\"8a  88P'   `\"8a  a8P_____88  88P'   \"Y8  \n" +
+                        "88    `8b 88  88        88          `8b  88           88  ,adPPPPP" +
+                        "88  88       88  88       88  8PP\"\"\"\"\"\"\"  88          \n" +
+                        "88     `8888  Y8a.    .a8P  Y8a     a8P  88           88  88," +
+                        "    ,88  88       88  88       88  \"8b,   ,aa  88          \n" +
+                        "88      `888   `\"Y8888Y\"'    \"Y88888P\"   88           88 " +
+                        " `\"8bbdP\"Y8  88       88  88       88   `\"Ybbd8\"'  88          \n" +
+                        "\n");
         System.out.println(logo + "Hello there! What can we do for you today?");
         printDash();
     }
