@@ -1,15 +1,20 @@
 package seedu.duke;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
+    private static final List<String> PERMITTED_SEMESTER_VALUES = Arrays.asList("1", "2", "3", "4");
+
     /**
      * Prints a line of dashes for better readability
      */
     public static void printDash() {
         System.out.println("____________________________________________________________");
     }
+
 
     /**
      * Obtains user input and interprets what needs to be performed by certain keywords.
@@ -46,7 +51,8 @@ public class Ui {
                 + "    ,88  88       88  88       88  \"8b,   ,aa  88          \n"
                 + "88      `888   `\"Y8888Y\"'    \"Y88888P\"   88           88 "
                 + " `\"8bbdP\"Y8  88       88  88       88   `\"Ybbd8\"'  88          \n" + "\n");
-        System.out.println(logo + "Hello there! What can we do for you today?");
+
+        System.out.println(logo);
         printDash();
     }
 
@@ -94,7 +100,7 @@ public class Ui {
      * Prints list of events
      * @param eventList Array List containing events to be printed to user
      */
-    public static void listTask(ArrayList<Schedule> eventList) {
+    public static void listTask(ArrayList<Event> eventList) {
         printDash();
         if (eventList.size() == 0) {
             System.out.println("There are no events!");
@@ -133,5 +139,34 @@ public class Ui {
         printDash();
         System.out.println("    > all events are deleted!");
         printDash();
+    }
+
+    public static void getSemester() {
+        System.out.println("Before getting started, Please enter the semester you are in according to the below menu.");
+
+        System.out.println("Type \"1\" for Semester 1");
+        System.out.println("Type \"2\" for Semester 2");
+        System.out.println("Type \"3\" for Special Term 1");
+        System.out.println("Type \"4\" for Special Term 2");
+
+        Scanner in = new Scanner(System.in);
+
+        String cmd = in.nextLine();
+
+        while (!PERMITTED_SEMESTER_VALUES.contains(cmd)) {
+            System.out.println("Not a valid semester, please provide a valid semester.");
+            System.out.println("Type \"1\" for Semester 1");
+            System.out.println("Type \"2\" for Semester 2");
+            System.out.println("Type \"3\" for Special Term 1");
+            System.out.println("Type \"4\" for Special Term 2");
+            cmd = in.nextLine();
+        }
+
+        User user = UserUtility.getUser();
+        user.setSemester(Integer.parseInt(cmd));
+
+        System.out.println("Semester saved!");
+        printDash();
+        System.out.println("Hello there! What can we do for you today?");
     }
 }
