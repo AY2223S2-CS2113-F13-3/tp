@@ -7,14 +7,12 @@ import java.util.Scanner;
 
 public class Ui {
     private static final List<String> PERMITTED_SEMESTER_VALUES = Arrays.asList("1", "2", "3", "4");
-
     /**
      * Prints a line of dashes for better readability
      */
     public static void printDash() {
         System.out.println("____________________________________________________________");
     }
-
 
     /**
      * Obtains user input and interprets what needs to be performed by certain keywords.
@@ -51,7 +49,6 @@ public class Ui {
                 + "    ,88  88       88  88       88  \"8b,   ,aa  88          \n"
                 + "88      `888   `\"Y8888Y\"'    \"Y88888P\"   88           88 "
                 + " `\"8bbdP\"Y8  88       88  88       88   `\"Ybbd8\"'  88          \n" + "\n");
-
         System.out.println(logo);
         printDash();
     }
@@ -100,7 +97,7 @@ public class Ui {
      * Prints list of events
      * @param eventList Array List containing events to be printed to user
      */
-    public static void listTask(ArrayList<Event> eventList) {
+    public static void listTask(ArrayList<Schedule> eventList) {
         printDash();
         if (eventList.size() == 0) {
             System.out.println("There are no events!");

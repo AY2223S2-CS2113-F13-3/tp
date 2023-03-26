@@ -36,7 +36,7 @@ public class SemData {
      */
     public List<Lesson> getLesson(String type, String classNum){
         return timetable.stream().filter(lesson ->
-                        (lesson.lessonType.equalsIgnoreCase(type)) && (lesson.classNumber.equals(classNum)))
+                (lesson.lessonType.equalsIgnoreCase(type)) && (lesson.classNumber.equals(classNum)))
                 .collect(Collectors.toList());
     }
 

@@ -1,6 +1,6 @@
 package seedu.duke;
 
-// This class will hold methods required by user
+// User utility class. This class will hold methods required by user.
 public class UserUtility {
     private static User user;
 
