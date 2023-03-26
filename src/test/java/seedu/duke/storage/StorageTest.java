@@ -65,7 +65,7 @@ class StorageTest {
                 "08:50", "2023/03/23");
         storage.saveToFile(original);
         EventList edited = new EventList(storage.loadEvents());
-        edited.addEvent("edit new event", "19:00", "2023/03/20", "13:00", "2023/03/21");
+        edited.addEvent("edit new event", "19:00", "2023/03/21", "13:00", "2023/03/22");
         storage.saveToFile(edited);
         EventList savedEvent =  new EventList(storage.loadEvents());
         String a = edited.getFullList().toString();
