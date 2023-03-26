@@ -28,7 +28,7 @@ public class Ui {
             Parser.parseCommand(cmd, eventList);
             cmd = in.nextLine();
         }
-
+        printExit();
         in.close();
     }
 
@@ -150,13 +150,19 @@ public class Ui {
 
         String cmd = in.nextLine();
 
-        while (!PERMITTED_SEMESTER_VALUES.contains(cmd)) {
-            System.out.println("Not a valid semester, please provide a valid semester.");
-            System.out.println("Type \"1\" for Semester 1");
-            System.out.println("Type \"2\" for Semester 2");
-            System.out.println("Type \"3\" for Special Term 1");
-            System.out.println("Type \"4\" for Special Term 2");
-            cmd = in.nextLine();
+        if (cmd.equals("bye")) {
+            printExit();
+            in.close();
+            System.exit(0);
+        } else {
+            while (!PERMITTED_SEMESTER_VALUES.contains(cmd)) {
+                System.out.println("Not a valid semester, please provide a valid semester.");
+                System.out.println("Type \"1\" for Semester 1");
+                System.out.println("Type \"2\" for Semester 2");
+                System.out.println("Type \"3\" for Special Term 1");
+                System.out.println("Type \"4\" for Special Term 2");
+                cmd = in.nextLine();
+            }
         }
 
         User user = UserUtility.getUser();

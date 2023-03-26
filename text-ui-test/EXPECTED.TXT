@@ -7,5 +7,13 @@
 88     `8888  Y8a.    .a8P  Y8a     a8P  88           88  88,    ,88  88       88  88       88  "8b,   ,aa  88          
 88      `888   `"Y8888Y"'    "Y88888P"   88           88  `"8bbdP"Y8  88       88  88       88   `"Ybbd8"'  88          
 
-Hello there! What can we do for you today?
+
+____________________________________________________________
+Before getting started, Please enter the semester you are in according to the below menu.
+Type "1" for Semester 1
+Type "2" for Semester 2
+Type "3" for Special Term 1
+Type "4" for Special Term 2
+____________________________________________________________
+Bye, see ya soon!
 ____________________________________________________________
