@@ -2,6 +2,7 @@ package seedu.duke;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -54,7 +55,9 @@ public class UserUtility {
             for (DayOfWeek day : DayOfWeek.values()) {
                 boolean found = false;
                 for (Schedule event : events) {
-                    if (event.getStartTime().getDayOfWeek() == day && isValidInterval(time, event)
+                    LocalDateTime startDateTime = event.getStartTime();
+                    LocalDateTime endDateTime = event.getEndTime();
+                    if (event.getStartTime().getDayOfWeek() == day && isValidInterval(time, startDateTime.toLocalTime(), endDateTime.toLocalTime())
                             && event.getStartTime().toLocalDate().isAfter(weekStartDate.minusDays(1))
                             && event.getStartTime().toLocalDate().isBefore(weekEndDate.plusDays(1))) {
                         System.out.print(String.format("%-15s|", event.getDescription()));
@@ -78,7 +81,7 @@ public class UserUtility {
         Ui.printDash();
     }
 
-    private static boolean isValidInterval(LocalTime time, Schedule event) {
-        return time.isAfter(event.getStartTime().toLocalTime()) && time.isBefore(event.getEndTime().toLocalTime());
+    private static boolean isValidInterval(LocalTime time, LocalTime startTime, LocalTime endTime) {
+        return time.equals(startTime) || (time.isAfter(startTime) && time.isBefore(endTime)) || time.equals(endTime);
     }
 }
