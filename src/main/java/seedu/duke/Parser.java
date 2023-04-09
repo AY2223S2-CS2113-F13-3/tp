@@ -5,23 +5,15 @@ import seedu.duke.storage.JsonNusModuleLoader;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import static seedu.duke.EventList.getInEventType;
-
 public class Parser {
     public static final Map<Integer, LocalDate> SEMESTER_START_DATES = Map.of(1, LocalDate.of(2022, 8, 8), 2,
             LocalDate.of(2023, 1, 9), 3, LocalDate.of(2023, 5, 8), 4, LocalDate.of(2023, 6, 19));
-
-    public static final Map<Integer, LocalDate> SEMESTER_END_DATES = Map.of(1, LocalDate.of(2022, 12, 3), 2,
-            LocalDate.of(2023, 5, 6), 3, LocalDate.of(2023, 6, 17), 4, LocalDate.of(2023, 7, 29));
-
-
     private static final int OFFSET = 1;
     private static final JsonNusModuleLoader converter = new JsonNusModuleLoader();
     private final Ui ui;
@@ -107,88 +99,6 @@ public class Parser {
 
     }
 
-    private static boolean extractFields(boolean[] duplicity, String[] information, String[] details,
-            boolean isModuleFlag) throws NPExceptions {
-
-        for (int i = 1; i < details.length; i++) {
-            String field = details[i].substring(0, 2).trim();
-            String change = details[i].substring(2).trim();
-            switch (field) {
-            case ("m"):
-                isModuleFlag = true;
-                if (!duplicity[0]) {
-                    information[0] = change;
-                    duplicity[0] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            case ("e"):
-                if (!duplicity[0]) {
-                    information[0] = change;
-                    duplicity[0] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            case ("n"):
-            case ("st"):
-                if (!duplicity[1]) {
-                    information[1] = change;
-                    duplicity[1] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            case ("sd"):
-            case ("l"):
-                if (!duplicity[2]) {
-                    information[2] = change;
-                    duplicity[2] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            case ("et"):
-                if (!duplicity[3]) {
-                    information[3] = change;
-                    duplicity[3] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            case ("ed"):
-                if (!duplicity[4]) {
-                    information[4] = change;
-                    duplicity[4] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            case ("r"):
-                if (!duplicity[5]) {
-                    information[5] = change;
-                    duplicity[5] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            case ("v"): // venue/location of the event
-                if (!duplicity[6]) {
-                    information[6] = change;
-                    duplicity[6] = true;
-                } else {
-                    throw new NPExceptions("Cannot have duplicate flags a command!");
-                }
-                break;
-            default:
-                break;
-            }
-        }
-
-        return isModuleFlag;
-    }
-
     private static void parseAddCommand(String remainder, EventList eventList) throws NPExceptions {
         // Method is still broken, someone will have to fix it fully later on when handling exceptions
         // Note no "-" anywhere else.
@@ -204,78 +114,15 @@ public class Parser {
         String[] information = new String[7];
         Arrays.fill(information, "");
 
-        isModuleFlag = extractFields(duplicity, information, details, isModuleFlag);
+        Map<String, Object> map =  UserUtility.extractFields(duplicity, information, details, isModuleFlag);
+        information = (String[]) map.get("information");
+        isModuleFlag = (boolean) map.get("isModuleFlag");
 
         addFormatChecker(information);
 
         // if body executed when user adds a module. Code inside "else" is same as before.
         if (isModuleFlag) {
-            // count to store the number of classes added into eventList.
-            int count = 0;
-
-            // fetching information
-            String moduleCode = information[0].toUpperCase();
-            String classNumber = information[1];
-            String lectureType = information[2];
-
-            // loading modules. Need to update when singleton design is utilized.
-            HashMap<String, NusModule> nusmods = converter.loadModules();
-            Duke.LOGGER.log(Level.INFO, "loadModules() called");
-            // Fetch NusModule from module code
-            NusModule nusModule = nusmods.get(moduleCode);
-            if (nusModule == null) {
-                Duke.LOGGER.log(Level.INFO, "User selected module that does not exist.");
-                throw new NPExceptions("Module " + moduleCode + " does not exist!");
-            }
-
-            // Fetch lessons from module
-            List<Lesson> lessons =
-                    nusModule.getLesson(UserUtility.getUser().getSemester(), lectureType, classNumber);
-            if (lessons == null || lessons.isEmpty()) {
-                Duke.LOGGER.log(Level.INFO, "User selected module that is unavailable for semester.");
-                Ui.printErrorMsg("Selected module is not available for semester "
-                        + UserUtility.getUser().getSemester());
-                return;
-            }
-
-            // Create event for each day of module
-            try {
-                ArrayList<Schedule> classes = new ArrayList<>();
-                ArrayList<String> venues = new ArrayList<>();
-                for (Lesson lesson : lessons) {
-                    String venue = lesson.getVenue();
-                    for (Integer week : lesson.getWeeks()) {
-
-                        // Method to get date on the lesson's day in a given week number.
-                        if (week >= 7) {
-                            week++;
-                        }
-
-                        String startDate =
-                                findDateOfWeek(UserUtility.getUser().getSemester(), week, lesson.getDay());
-
-                        // Converting time to HH:mm format.
-                        StringBuilder sb = new StringBuilder(lesson.getStartTime());
-                        String startTime = sb.insert(2, ':').toString();
-                        sb = new StringBuilder(lesson.getEndTime());
-                        String endTime = sb.insert(2, ':').toString();
-
-                        Event curClass = getInEventType(nusModule.getModuleCode(), startTime, startDate,
-                                endTime, startDate);
-                        classes.add(curClass);
-                        venues.add(venue);
-
-                        count++;
-                    }
-                }
-                eventList.addEvent(classes, venues);
-
-                Duke.LOGGER.log(Level.INFO, "User added module to event list.");
-                Ui.addSuccessMsg("Added " + count + " classes of Module: " + moduleCode);
-            } catch (NPExceptions e) {
-                System.out.println(e.getMessage());
-            }
-
+            eventList.addModule(information, converter);
         } else {
             String eventName = information[0];
             String startTime = information[1];
@@ -304,14 +151,14 @@ public class Parser {
 
             // add location(venue)
             int eventNum = eventList.getSize() - 1;
-            if (duplicity[6] == true) {
+            if (duplicity[6]) {
                 eventList.reviseLocation(eventNum, information[6]);
             }
             Ui.addSuccessMsg(eventList.getLastTaskDescription());
         }
     }
 
-    private static String findDateOfWeek(int semester, Integer weekNumber, String dayOfWeek) {
+    public static String findDateOfWeek(int semester, Integer weekNumber, String dayOfWeek) {
         // Specify the start date of the semester
         LocalDate semesterStartDate = SEMESTER_START_DATES.get(semester);
 
@@ -361,10 +208,8 @@ public class Parser {
             }
         }
 
-        addFormatChecker(information);
-
-        if (information[2].equals("") || information[1].equals("")) { // Starting date field MUST NOT be empty.
-            throw new NPExceptions("Empty starting date/time detected! Please add starting date.");
+        if (information[2].equals("")) { // Starting date field MUST NOT be empty.
+            throw new NPExceptions("Empty starting date detected! Please add starting date.");
         }
 
         if (information[0].equals("")) {
@@ -422,7 +267,6 @@ public class Parser {
         if (!information[4].equals("")) {
             eventList.reviseTimeInfo(information[0], information[1], information[2], information[3],
                     information[4]);
-
         } else {
             eventList.reviseTimeInfo(information[0], information[1], information[2]);
         }

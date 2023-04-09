@@ -4,6 +4,7 @@ package seedu.duke;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Schedule {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
@@ -56,7 +57,7 @@ public class Schedule {
     }
 
     public Schedule(LocalDateTime start, LocalDateTime end, boolean hasSt, boolean hasEd,
-            String recurringTime) {
+                    String recurringTime) {
         this.startTime = start;
         this.endTime = end;
         this.hasEndInfo = true;
@@ -79,7 +80,7 @@ public class Schedule {
     }
 
     public Schedule(LocalDateTime start, String location, boolean hasSt, boolean hasLocation,
-            String recurringTime) {
+                    String recurringTime) {
         this.startTime = start;
         this.hasEndTime = false;
         this.hasStartTime = hasSt;
@@ -91,7 +92,7 @@ public class Schedule {
     }
 
     public Schedule(LocalDateTime start, LocalDateTime end, String location, boolean hasSt, boolean hasEd,
-            boolean hasLocation) {
+                    boolean hasLocation) {
         this.startTime = start;
         this.endTime = end;
         this.hasEndInfo = true;
@@ -103,7 +104,7 @@ public class Schedule {
     }
 
     public Schedule(LocalDateTime start, LocalDateTime end, String location, boolean hasSt, boolean hasEd,
-            boolean hasLocation, String recurringTime) {
+                    boolean hasLocation, String recurringTime) {
         this.startTime = start;
         this.endTime = end;
         this.hasEndInfo = true;
@@ -138,6 +139,9 @@ public class Schedule {
                 break;
             case ("W"):
                 interval = "Week(s)";
+                break;
+            case ("M"):
+                interval = "Month(s)";
                 break;
             default:
                 break;
@@ -253,5 +257,18 @@ public class Schedule {
 
     public String getDescription() {
         return "";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Schedule)) return false;
+        Schedule schedule = (Schedule) o;
+        return getStartTime().equals(schedule.getStartTime()) && Objects.equals(getEndTime(), schedule.getEndTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStartTime(), getEndTime());
     }
 }

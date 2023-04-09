@@ -9,6 +9,7 @@ public class NusModule {
     public String faculty;
     public String moduleCredit;
     public String moduleCode;
+    //public List<SemData> semesterData;
     public HashMap<Integer, SemData> semesterData;
 
     public NusModule(String description, String title, String faculty, String moduleCredit,
@@ -41,11 +42,11 @@ public class NusModule {
         return moduleCode;
     }
 
-    public List<Lesson> getLesson(int semesterNumber, String type, String classNum){
+    public List<Lesson> getLesson(int semesterNumber, String type, String classNum) throws NPExceptions {
         SemData semester = semesterData.get(semesterNumber);
+        if (semester == null) {
+            throw new NPExceptions("Module is not available in semester " + semesterNumber);
+        }
         return semester.getLesson(type, classNum);
     }
 }
-
-
-
