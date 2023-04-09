@@ -197,7 +197,8 @@ public class UserUtility {
                 LocalTime.of(0, 0));
         String semEndString = Parser.findDateOfWeek(getUser().getSemester(),
                 14, "FRIDAY");
-        LocalDateTime semEnd = LocalDateTime.parse(semEndString + " 23:59", DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+        LocalDateTime semEnd = LocalDateTime.parse(semEndString + " 23:59",
+                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
         if (startDate.isBefore(semStart) || startDate.isAfter(semEnd)){
             throw new NPExceptions("Event start date time should be within semester dates.");
         }
