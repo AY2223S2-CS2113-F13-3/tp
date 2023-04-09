@@ -261,8 +261,14 @@ public class Schedule {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Schedule)) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Schedule)) {
+            return false;
+        }
+
         Schedule schedule = (Schedule) o;
         return getStartTime().equals(schedule.getStartTime()) && Objects.equals(getEndTime(), schedule.getEndTime());
     }

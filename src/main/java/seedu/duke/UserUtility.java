@@ -193,8 +193,10 @@ public class UserUtility {
         if (endDate != null && !endDate.isAfter(startDate)){
             throw new NPExceptions("Event end date time should be after start date time.");
         }
-        LocalDateTime semStart = LocalDateTime.of(Parser.SEMESTER_START_DATES.get(getUser().getSemester()), LocalTime.of(0, 0));
-        String semEndString = Parser.findDateOfWeek(getUser().getSemester(), 14, "FRIDAY");
+        LocalDateTime semStart = LocalDateTime.of(Parser.SEMESTER_START_DATES.get(getUser().getSemester()),
+                LocalTime.of(0, 0));
+        String semEndString = Parser.findDateOfWeek(getUser().getSemester(),
+                14, "FRIDAY");
         LocalDateTime semEnd = LocalDateTime.parse(semEndString + " 23:59", DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
         if (startDate.isBefore(semStart) || startDate.isAfter(semEnd)){
             throw new NPExceptions("Event start date time should be within semester dates.");
