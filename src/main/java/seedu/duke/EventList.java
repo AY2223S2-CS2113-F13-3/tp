@@ -62,6 +62,14 @@ public class EventList {
     }
 
     /**
+     * For two addEvent funcs below: if user doesn't input endDay(which means there is also no endTime),
+     * you can just call .addEvent(description, startTime, startDay) I also make the specific time(hh:mm)
+     * optional, so if user doesn't input the specfic time, you can just pass an empty String to that param
+     * and it will handle the rest things
+     * e.g.addEvent(descrption, "", startDay, "", endDay)
+     *     addEvent(descrption, "", startDay, endTime, endDay)
+     *     addEvent(descrption, "", startDay) so only startDay is strictly required. and the same for reviseTimeInfo()
+     *
      * @param time String representing Time to be converted to dateTime format in combinedTime. Format "HH:MM".
      * @param day String representing Date to be converted to dateTime format in combinedTime. Format "YYYY/MM/DD".
      * @return TimeAndFlag
@@ -158,6 +166,10 @@ public class EventList {
         Event newEvent =
                 new Event(description, startInfo.time, endInfo.time, startInfo.hasInfo, endInfo.hasInfo);
 
+        LocalDateTime startDate = newEvent.getStartTime();
+        LocalDateTime endDate = newEvent.getEndTime();
+        UserUtility.validateDates(startDate, endDate);
+
         if (newEvent.getStartTime().isAfter(newEvent.getEndTime())) {
             throw new NPExceptions("Starting time is after ending time!");
         }
@@ -169,6 +181,10 @@ public class EventList {
             throws NPExceptions {
 
         Event newEvent = getInEventType(description, startTime, startDay, endTime, endDay);
+
+        LocalDateTime startDate = newEvent.getStartTime();
+        LocalDateTime endDate = newEvent.getEndTime();
+        UserUtility.validateDates(startDate, endDate);
                 
         if (!canAddNewEvent(newEvent, -1, taskList)) {
             throw new NPExceptions("Events/classes conflition!");
@@ -183,6 +199,11 @@ public class EventList {
         TimeAndFlag startInfo = convertToTimeInfo(startTime, startDay);
 
         Event newEvent = new Event(description, startInfo.time, startInfo.hasInfo);
+
+        LocalDateTime startDate = newEvent.getStartTime();
+        LocalDateTime endDate = newEvent.getEndTime();
+        UserUtility.validateDates(startDate, endDate);
+
         taskList.add(newEvent);
         listSize++;
         assert taskList.size() == listSize : "size of taskList is different from listSize attribute";
@@ -244,6 +265,8 @@ public class EventList {
         TimeAndFlag startInfo = convertToTimeInfo(startTime, startDay);
         TimeAndFlag endInfo = convertToTimeInfo(endTime, endDay);
 
+        UserUtility.validateDates(startInfo.time, endInfo.time);
+
         Event eventToCheck = new Event(taskList.get(index).getDescription(), startInfo.time, endInfo.time,
                 startInfo.hasInfo, endInfo.hasInfo);
         if (!canAddNewEvent(eventToCheck, index, taskList)) {
@@ -256,7 +279,7 @@ public class EventList {
 
     public void reviseTimeInfo(int index, String startTime, String startDay) throws NPExceptions {
         TimeAndFlag startInfo = convertToTimeInfo(startTime, startDay);
-
+        UserUtility.validateDates(startInfo.time, null);
         taskList.get(index).changeTimeInfo(startInfo.time, startInfo.hasInfo);
     }
 
@@ -272,6 +295,7 @@ public class EventList {
 
     // need handle exceptions when index = -1
     public void reviseTimeInfo(String description, String startTime, String startDay) throws NPExceptions {
+
         int index = searchTaskIndex(description);
         if (index == -1) {
             throw new NPExceptions("Event cannot be found!");
