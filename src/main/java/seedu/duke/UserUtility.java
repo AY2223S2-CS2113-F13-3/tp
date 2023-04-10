@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 // User utility class. This class will hold methods required by user.
@@ -88,5 +89,23 @@ public class UserUtility {
             LocalDateTime endTime) {
         return time.equals(startTime) || (time.isAfter(startTime) && time.isBefore(endTime))
                 || time.equals(endTime);
+    }
+
+    public static void validateDates(LocalDateTime startDate, LocalDateTime endDate) throws NPExceptions {
+        if (endDate != null && !endDate.isAfter(startDate)){
+            throw new NPExceptions("Event end date time should be after start date time.");
+        }
+        LocalDateTime semStart = LocalDateTime.of(Parser.SEMESTER_START_DATES.get(getUser().getSemester()), LocalTime.of(0, 0));
+        String semEndString = Parser.findDateOfWeek(getUser().getSemester(), 14, "FRIDAY");
+        LocalDateTime semEnd = LocalDateTime.parse(semEndString + " 23:59", DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+        if (startDate.isBefore(semStart) || startDate.isAfter(semEnd)){
+            throw new NPExceptions("Event start date time should be within semester dates.");
+        }
+        if (endDate != null && endDate.isAfter(semEnd)){
+            throw new NPExceptions("Event end date time should be before semester dates.");
+        }
+        if (endDate != null && endDate.isBefore(semStart)){
+            throw new NPExceptions("Event end date time should be before semester dates.");
+        }
     }
 }

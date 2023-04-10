@@ -311,7 +311,7 @@ public class Parser {
         }
     }
 
-    private static String findDateOfWeek(int semester, Integer weekNumber, String dayOfWeek) {
+    public static String findDateOfWeek(int semester, Integer weekNumber, String dayOfWeek) {
         // Specify the start date of the semester
         LocalDate semesterStartDate = SEMESTER_START_DATES.get(semester);
 
